@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "error_code.h"
+#include "io.h"
+#include "log.h"
 #include "parse.h"
 #include "stb_ds.h"
 
@@ -38,7 +40,8 @@ ErrorCode ParseFloatList(float **f, const char **str) {
     return OK;
 }
 
-ErrorCode ParseLabelled(size_t *count, size_t *length, int **labels, float ***series, const char *str) {
+ErrorCode
+ParseLabelled(size_t *count, size_t *length, int **labels, float ***series, const char *str) {
     ErrorCode ec    = OK;
     int *_labels    = NULL;
     float **_series = NULL;
@@ -78,4 +81,16 @@ void FreeLabelled(size_t count, int *labels, float **series) {
     for (size_t i = 0; i < count; i++)
         if (series[i]) arrfree(series[i]);
     if (series) arrfree(series);
+}
+
+ErrorCode
+LoadFromFile(size_t *count, size_t *length, int **labels, float ***series, const char *path) {
+    TRACE("Opening file %s", path);
+    File file = FileOpen(path);
+    TRACE("Parsing data");
+    ErrorCode ec = ParseLabelled(count, length, labels, series, file.buffer);
+    TRACE("Closing file %s", path);
+    FileClose(&file);
+    if (ec != OK) ERROR("Load failed with %i", ec);
+    return ec;
 }

@@ -17,6 +17,7 @@ OBJS = $(SRCS:.c=.o)
 .extract: .build
 	$(CC) $(CFLAGS) -o extract $(BIN_DIR)/extract.c $(OBJS)
 
+all: build
 build: .classify .convert .extract
 
 for tbuild: CFLAGS += -fsanitize=address -D LOG_TRACE
