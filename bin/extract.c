@@ -1,5 +1,5 @@
 #define STB_DS_IMPLEMENTATION
-#include "stb_ds.h"
+#include <stb_ds.h>
 
 #include "error_code.h"
 #include "io.h"
@@ -16,10 +16,12 @@ int main(int argc, char **argv) {
     File file = FileOpen(argv[1]);
     INFO("Parsing data");
     ErrorCode result;
-    size_t count, length;
-    int *labels;
-    float **series;
-    if ((result = ParseLabelled(&count, &length, &labels, &series, file.buffer)) != OK) {
+    size_t    count, length;
+    int      *labels;
+    float   **series;
+    if ((result = ParseLabelled(
+             &count, &length, &labels, &series, file.buffer
+         )) != OK) {
         ERROR("Failed to parse series data");
         TRACE("Closing file");
         FileClose(&file);
@@ -29,6 +31,7 @@ int main(int argc, char **argv) {
     FileClose(&file);
     INFO("Data points: %zu", count);
     INFO("Series length: %zu", length);
+
     FreeLabelled(count, labels, series);
     return 0;
 }

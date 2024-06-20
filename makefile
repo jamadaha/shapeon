@@ -23,7 +23,7 @@ build: .classify .convert .extract
 for tbuild: CFLAGS += -fsanitize=address -D LOG_TRACE
 tbuild: .classify .convert .extract
 
-for dbuild: CFLAGS += -fsanitize=address -D LOG_DEBUG -O0 -ggdb
+for dbuild: CFLAGS += -fsanitize=address -D LOG_DEBUG -O0
 dbuild: .classify .convert .extract
 
 for test: CFLAGS += -fsanitize=address -D LOG_DEBUG -O0

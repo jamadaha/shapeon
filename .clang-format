@@ -1,8 +1,10 @@
-ColumnLimit: 100
+ColumnLimit: 60
 IndentWidth: 4
 AccessModifierOffset: -4
-AlignAfterOpenBracket: BlockIndent  # Align
-AlwaysBreakTemplateDeclarations: Yes  # Yes
+AlignAfterOpenBracket: BlockIndent
 AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
 AllowShortIfStatementsOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackParameters: false

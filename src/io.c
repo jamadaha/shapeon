@@ -18,12 +18,16 @@ File FileOpen(const char *path) {
 
     struct stat sb;
     if (fstat(file.fd, &sb) == -1) {
-        ERROR("Failed to retrieve size of file \"%s\"", path);
+        ERROR(
+            "Failed to retrieve size of file \"%s\"", path
+        );
         close(file.fd);
         exit(1);
     }
     file.len    = sb.st_size;
-    file.buffer = mmap(NULL, file.len, PROT_READ, MAP_PRIVATE, file.fd, 0);
+    file.buffer = mmap(
+        NULL, file.len, PROT_READ, MAP_PRIVATE, file.fd, 0
+    );
     if (file.buffer == MAP_FAILED) {
         ERROR("Failed to map file content of \"%s\"", path);
         close(file.fd);

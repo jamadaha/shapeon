@@ -32,7 +32,7 @@ ErrorCode ParseFloatList(float **f, const char **str) {
             (*str)++;
             continue;
         }
-        float _f;
+        float     _f;
         ErrorCode ec = ParseFloat(&_f, str);
         if (ec != OK) return ec;
         arrpush(*f, _f);
@@ -40,11 +40,16 @@ ErrorCode ParseFloatList(float **f, const char **str) {
     return OK;
 }
 
-ErrorCode
-ParseLabelled(size_t *count, size_t *length, int **labels, float ***series, const char *str) {
-    ErrorCode ec    = OK;
-    int *_labels    = NULL;
-    float **_series = NULL;
+ErrorCode ParseLabelled(
+    size_t     *count,
+    size_t     *length,
+    int       **labels,
+    float    ***series,
+    const char *str
+) {
+    ErrorCode ec      = OK;
+    int      *_labels = NULL;
+    float   **_series = NULL;
 
     while (*str != '\0' && *str != EOF) {
         if (isspace(*str)) {
@@ -76,19 +81,30 @@ ParseLabelled(size_t *count, size_t *length, int **labels, float ***series, cons
     return ec;
 }
 
-void FreeLabelled(size_t count, int *labels, float **series) {
+void FreeLabelled(
+    size_t  count,
+    int    *labels,
+    float **series
+) {
     if (labels) arrfree(labels);
     for (size_t i = 0; i < count; i++)
         if (series[i]) arrfree(series[i]);
     if (series) arrfree(series);
 }
 
-ErrorCode
-LoadFromFile(size_t *count, size_t *length, int **labels, float ***series, const char *path) {
+ErrorCode LoadFromFile(
+    size_t     *count,
+    size_t     *length,
+    int       **labels,
+    float    ***series,
+    const char *path
+) {
     TRACE("Opening file %s", path);
     File file = FileOpen(path);
     TRACE("Parsing data");
-    ErrorCode ec = ParseLabelled(count, length, labels, series, file.buffer);
+    ErrorCode ec = ParseLabelled(
+        count, length, labels, series, file.buffer
+    );
     TRACE("Closing file %s", path);
     FileClose(&file);
     if (ec != OK) ERROR("Load failed with %i", ec);

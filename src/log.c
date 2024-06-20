@@ -28,7 +28,8 @@ void LogStop(void) {
 }
 
 void _LogOutput(LogLevel level, const char *msg, ...) {
-    const char *LEVELS[6] = {"FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"};
+    const char *LEVELS[6] = {"FATAL", "ERROR", "WARN",
+                             "INFO",  "DEBUG", "TRACE"};
 
     bool is_error = level < 2;
 
@@ -40,17 +41,31 @@ void _LogOutput(LogLevel level, const char *msg, ...) {
     vsnprintf(formatted, 32000, msg, arg_ptr);
     va_end(arg_ptr);
 
-    double time_stamp = (double)(clock() - program_start) / CLOCKS_PER_SEC;
+    double time_stamp =
+        (double)(clock() - program_start) / CLOCKS_PER_SEC;
 
     char out[33000];
     if (level == LOG_LEVEL_ERROR)
-        sprintf(out, RED "[%-5s %8.4fs] %s\n" RESET, LEVELS[level], time_stamp, formatted);
+        sprintf(
+            out, RED "[%-5s %8.4fs] %s\n" RESET,
+            LEVELS[level], time_stamp, formatted
+        );
     else if (level == LOG_LEVEL_WARN)
-        sprintf(out, YELLOW "[%-5s %8.4fs] %s\n" RESET, LEVELS[level], time_stamp, formatted);
-    else if (level == LOG_LEVEL_TRACE || level == LOG_LEVEL_DEBUG)
-        sprintf(out, GRAY "[%-5s %8.4fs] %s\n" RESET, LEVELS[level], time_stamp, formatted);
+        sprintf(
+            out, YELLOW "[%-5s %8.4fs] %s\n" RESET,
+            LEVELS[level], time_stamp, formatted
+        );
+    else if (level == LOG_LEVEL_TRACE ||
+             level == LOG_LEVEL_DEBUG)
+        sprintf(
+            out, GRAY "[%-5s %8.4fs] %s\n" RESET,
+            LEVELS[level], time_stamp, formatted
+        );
     else
-        sprintf(out, "[%-5s %8.4fs] %s\n", LEVELS[level], time_stamp, formatted);
+        sprintf(
+            out, "[%-5s %8.4fs] %s\n", LEVELS[level],
+            time_stamp, formatted
+        );
 
     if (is_error)
         fprintf(stderr, "%s", out);

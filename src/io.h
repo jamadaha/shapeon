@@ -3,7 +3,8 @@
 #include <sys/stat.h>
 
 typedef struct {
-    int fd, len;
+    int   fd;
+    int   len;
     char *buffer;
 } File;
 
