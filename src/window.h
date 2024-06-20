@@ -9,13 +9,13 @@ typedef struct {
 } Window;
 
 typedef struct {
-    size_t       window_ptr;   // current window pos
     const size_t window_min;   // minimum window width
     const size_t window_max;   // maximum window width
+    size_t       window_index; // current window pos
     size_t       window_width; // current window width
-    size_t       series_index; // current series index
     const size_t series_count; // number of series
     const size_t series_width; // width of series
+    size_t       series_index; // current series index
     float      **series;       // ptr to a list of lists
 } Windower;
 
