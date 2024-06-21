@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
     INFO("Series length: %zu", length);
     int    label_map[100];
     size_t classes = MapLabels(label_map, labels, count);
+    INFO("Class count: %zu", classes);
 
     FreeLabelled(count, labels, series);
     return 0;
