@@ -1,9 +1,7 @@
-#include "feature.h"
 #include "window.h"
 #include <criterion/assert.h>
 #include <criterion/internal/assert.h>
 #include <criterion/parameterized.h>
-#include <math.h>
 
 Test(windower, single) {
     float **series = malloc(sizeof(float *));

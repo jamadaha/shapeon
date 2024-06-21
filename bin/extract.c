@@ -1,3 +1,4 @@
+#include "preprocessing.h"
 #define STB_DS_IMPLEMENTATION
 #include <stb_ds.h>
 
@@ -31,6 +32,8 @@ int main(int argc, char **argv) {
     FileClose(&file);
     INFO("Data points: %zu", count);
     INFO("Series length: %zu", length);
+    int    label_map[100];
+    size_t classes = MapLabels(label_map, labels, count);
 
     FreeLabelled(count, labels, series);
     return 0;
