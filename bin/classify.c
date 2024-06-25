@@ -21,9 +21,16 @@ void swapf(float *a, float *b) {
     *b         = temp;
 }
 
-int Classify(size_t k, size_t count, size_t length, int *labels, float **series, float *s) {
+int Classify(
+    size_t  k,
+    size_t  count,
+    size_t  length,
+    int    *labels,
+    float **series,
+    float  *s
+) {
     float best_value[k];
-    int best_label[k];
+    int   best_label[k];
     for (size_t i = 0; i < k; i++) {
         best_value[i] = FLT_MAX;
         best_label[i] = INT_MAX;
@@ -37,12 +44,16 @@ int Classify(size_t k, size_t count, size_t length, int *labels, float **series,
             best_label[k - 1] = labels[i];
             for (size_t t = k - 1; t > 1; t--)
                 if (best_value[t] < best_value[t - 1]) {
-                    swapf(&best_value[t - 1], &best_value[t]);
-                    swapi(&best_label[t - 1], &best_label[t]);
+                    swapf(
+                        &best_value[t - 1], &best_value[t]
+                    );
+                    swapi(
+                        &best_label[t - 1], &best_label[t]
+                    );
                 }
         }
     }
-    int label          = INT_MAX;
+    int    label       = INT_MAX;
     size_t highest_occ = 0;
     for (size_t i = 0; i < k; i++) {
         size_t occ = 0;
@@ -62,24 +73,30 @@ int main(int argc, char **argv) {
         ERROR("Missing path argument");
         return 1;
     }
-    size_t k               = 1;
-    size_t shots           = 6;
+    size_t      k          = 1;
+    size_t      shots      = 6;
     const char *path_train = argv[1];
     const char *path_test  = argv[2];
     INFO("Path train: %s", path_train);
     INFO("Path test: %s", path_test);
 
-    size_t count_train, length_train, count_test, length_test;
-    int *labels_train, *labels_test;
+    size_t count_train, length_train, count_test,
+        length_test;
+    int    *labels_train, *labels_test;
     float **series_train, **series_test;
 
     ErrorCode ec;
     INFO("Loading train data");
-    if ((ec = LoadFromFile(&count_train, &length_train, &labels_train, &series_train, path_train)
-        ) != OK)
+    if ((ec = Load(
+             &count_train, &length_train, &labels_train,
+             &series_train, path_train
+         )) != OK)
         return ec;
     INFO("Loading test data");
-    if ((ec = LoadFromFile(&count_test, &length_test, &labels_test, &series_test, path_test)) != OK)
+    if ((ec = Load(
+             &count_test, &length_test, &labels_test,
+             &series_test, path_test
+         )) != OK)
         return ec;
 
     if (shots > count_train) shots = count_train;
@@ -87,15 +104,23 @@ int main(int argc, char **argv) {
     size_t correct = 0;
     for (size_t i = 0; i < count_test; i++) {
         int label_expected = labels_test[i];
-        int label_actual =
-            Classify(k, shots, length_train, labels_train, series_train, series_test[i]);
+        int label_actual   = Classify(
+            k, shots, length_train, labels_train,
+            series_train, series_test[i]
+        );
         if (label_expected == label_actual) correct++;
     }
-    printf("Total: %zu. Correct: %zu\n", count_test, correct);
-    printf("Accuracy: %f%%\n", (double)correct / (double)count_test * 100);
+    printf(
+        "Total: %zu. Correct: %zu\n", count_test, correct
+    );
+    printf(
+        "Accuracy: %f%%\n",
+        (double)correct / (double)count_test * 100
+    );
 
     if (length_train != length_test) {
-        ERROR("Train and test series are not of same length");
+        ERROR("Train and test series are not of same length"
+        );
         return 1;
     }
 

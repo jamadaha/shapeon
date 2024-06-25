@@ -1,6 +1,7 @@
 #pragma once
 
-#include <sys/stat.h>
+#include "error_code.h"
+#include "feature.h"
 
 typedef struct {
     int   fd;
@@ -12,3 +13,5 @@ typedef struct {
 // Remember to call close file!
 File FileOpen(const char *path);
 void FileClose(File *file);
+
+ErrorCode ExportFeatures(size_t count, Feature *features);

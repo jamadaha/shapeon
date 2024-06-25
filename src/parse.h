@@ -4,7 +4,7 @@
 
 #include "error_code.h"
 
-ErrorCode LoadFromFile(
+ErrorCode Load(
     size_t     *count,
     size_t     *length,
     int       **labels,

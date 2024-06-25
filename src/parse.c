@@ -92,7 +92,7 @@ void FreeLabelled(
     if (series) arrfree(series);
 }
 
-ErrorCode LoadFromFile(
+ErrorCode Load(
     size_t     *count,
     size_t     *length,
     int       **labels,

@@ -15,7 +15,7 @@ size_t MapLabels(int *mapped, int *labels, size_t length) {
             }
         if (m == INT_MAX) {
             mapped[count] = labels[i];
-            m = count++;
+            m             = count++;
         }
         labels[i] = m;
     }
