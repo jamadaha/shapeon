@@ -1,4 +1,5 @@
 #include "io.h"
+#include "error_code.h"
 #include "log.h"
 #include <fcntl.h>
 #include <stdio.h>
@@ -39,5 +40,16 @@ void FileClose(File *file) {
 }
 
 ErrorCode ExportFeatures(size_t count, Feature *features) {
-    return OK; // TODO
+    FILE *f = fopen("out.tsv", "w");
+    if (!f) return FAILED_TO_OPEN_FILE;
+
+    for (size_t i = 0; i < count; i++) {
+        Feature *feature = &features[i];
+        fprintf(f, "%u", feature->a);
+        for (size_t t = 0; t < feature->length; t++)
+            fprintf(f, " %f", feature->shapelet[t]);
+        fprintf(f, "\n");
+    }
+
+    return OK;
 }

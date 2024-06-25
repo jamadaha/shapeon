@@ -80,7 +80,8 @@ size_t Extract(
     int      *labels,   // The class of each series
     float   **series    // A list of series. Must all be equal length
 ) {
-    Windower windower               = WindowerInit(2, 2, length, count, series);
+    Windower windower               = WindowerInit(2, 4, length, count, series);
+    size_t   feature_count          = 0;
     float    feature_vals[FEATURES] = {0};
     Feature  _features[FEATURES]    = {0};
     for (size_t i = 0; i < FEATURES; i++) {
@@ -97,8 +98,10 @@ size_t Extract(
                 float *s = series[i];
                 vals[i]  = AttributeCalculate(attribute, window.ptr, window.width, s, length);
             }
-            const float eval = Evaluate(count, classes, labels, vals);
-            if (eval > feature_vals[FEATURES - 1]) {
+            const float eval    = Evaluate(count, classes, labels, vals);
+            Feature     feature = {.a = attribute, .shapelet = window.ptr, .length = window.width};
+            if (eval > feature_vals[FEATURES - 1] && !Exists(feature_count, _features, &feature)) {
+                if (feature_count < FEATURES) feature_count++;
                 feature_vals[FEATURES - 1]       = eval;
                 _features[FEATURES - 1].shapelet = window.ptr;
                 _features[FEATURES - 1].length   = window.width;
@@ -117,11 +120,7 @@ size_t Extract(
         }
     }
 
-    size_t feature_count = 0;
-    for (size_t i = 0; i < 100; i++) {
-        if (!_features[i].shapelet) break;
-        feature_count++;
+    for (size_t i = 0; i < feature_count; i++)
         arrpush(*features, _features[i]);
-    }
     return feature_count;
 }
