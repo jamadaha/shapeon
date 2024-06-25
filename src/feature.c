@@ -2,6 +2,7 @@
 #include "log.h"
 #include <float.h>
 #include <math.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
 static inline float Dist(
@@ -24,9 +25,9 @@ static inline float DistMin(
     const float *series,
     size_t       series_length
 ) {
-    float best_dist = FLT_MAX;
-    for (size_t i = 0; i <= series_length - shapelet_length;
-         i++) {
+    const size_t limit = series_length - shapelet_length;
+    float        best_dist = FLT_MAX;
+    for (size_t i = 0; i <= limit; i++) {
         const float dist =
             Dist(shapelet, shapelet_length, series, i);
         if (dist < best_dist) best_dist = dist;
@@ -40,14 +41,51 @@ static inline float DistMax(
     const float *series,
     size_t       series_length
 ) {
-    float best_dist = FLT_MIN;
-    for (size_t i = 0; i <= series_length - shapelet_length;
-         i++) {
+    const size_t limit = series_length - shapelet_length;
+    float        best_dist = FLT_MIN;
+    for (size_t i = 0; i <= limit; i++) {
         const float dist =
             Dist(shapelet, shapelet_length, series, i);
         if (dist > best_dist) best_dist = dist;
     }
     return best_dist;
+}
+
+static inline bool IsMatch(
+    const float *shapelet,
+    size_t       shapelet_length,
+    const float *series,
+    size_t       pos,
+    float        tolerance
+) {
+    const float offset = series[pos] - shapelet[0];
+    for (size_t i = 0; i < shapelet_length; i++) {
+        const float d =
+            fabs(series[pos + i] - shapelet[i] - offset);
+        if (d > tolerance) return false;
+    }
+    return true;
+}
+
+static inline float Frequency(
+    const float *shapelet,
+    size_t       shapelet_length,
+    const float *series,
+    size_t       series_length
+) {
+    const size_t limit = series_length - shapelet_length;
+    const float  tolerance =
+        fabs(shapelet[1] - shapelet[0]) / 10;
+
+    size_t matches = 0;
+    for (size_t i = 0; i <= limit; i++) {
+        if (IsMatch(
+                shapelet, shapelet_length, series, i,
+                tolerance
+            ))
+            matches++;
+    }
+    return (float)matches / (limit + 1);
 }
 
 float AttributeCalculate(
@@ -64,6 +102,10 @@ float AttributeCalculate(
         );
     case DIST_MAX:
         return DistMax(
+            shapelet, shapelet_length, series, series_length
+        );
+    case FREQUENCY:
+        return Frequency(
             shapelet, shapelet_length, series, series_length
         );
     default: break;

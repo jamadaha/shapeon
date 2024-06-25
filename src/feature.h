@@ -5,6 +5,7 @@
 typedef enum {
     DIST_MIN,
     DIST_MAX,
+    FREQUENCY,
     MAX_ATTRIBUTE
 } Attribute;
 
