@@ -3,12 +3,12 @@
 #include <stddef.h>
 
 typedef enum { DIST_MIN, DIST_MAX, FREQUENCY, MAX_ATTRIBUTE } Attribute;
-static Attribute ATTRIBUTES[MAX_ATTRIBUTE] = {DIST_MIN, DIST_MAX, FREQUENCY};
+extern const Attribute ATTRIBUTES[MAX_ATTRIBUTE];
 
 typedef struct {
-    Attribute    a;
-    const float *shapelet;
-    size_t       length;
+    Attribute a;
+    float    *shapelet;
+    size_t    length;
 } Feature;
 
 float AttributeCalculate(

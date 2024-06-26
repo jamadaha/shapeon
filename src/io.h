@@ -19,6 +19,15 @@ void FileClose( //
 );
 
 ErrorCode ExportFeatures( //
-    size_t   count,
-    Feature *features
+    const char *path,
+    size_t      count,
+    Feature    *features
+);
+
+ErrorCode ExportSeries( //
+    const char *path,
+    size_t      count,
+    size_t      length,
+    int        *labels,
+    float     **series
 );

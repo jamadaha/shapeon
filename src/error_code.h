@@ -6,5 +6,6 @@ typedef enum {
     FAILED_TO_OPEN_FILE     = 10,
     PARSE_ERROR             = 20,
     PARSE_INVALID_CHARACTER = 21,
+    PARSE_INVALID_ATTRIBUTE = 22,
     NONE                    = 100
 } ErrorCode;

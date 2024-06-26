@@ -44,10 +44,11 @@ void FileClose( //
 }
 
 ErrorCode ExportFeatures( //
-    size_t   count,
-    Feature *features
+    const char *path,
+    size_t      count,
+    Feature    *features
 ) {
-    FILE *f = fopen("out.tsv", "w");
+    FILE *f = fopen(path, "w");
     if (!f) return FAILED_TO_OPEN_FILE;
 
     for (size_t i = 0; i < count; i++) {
@@ -55,6 +56,26 @@ ErrorCode ExportFeatures( //
         fprintf(f, "%u", feature->a);
         for (size_t t = 0; t < feature->length; t++)
             fprintf(f, " %f", feature->shapelet[t]);
+        fprintf(f, "\n");
+    }
+
+    return OK;
+}
+
+ErrorCode ExportSeries( //
+    const char *path,
+    size_t      count,
+    size_t      length,
+    int        *labels,
+    float     **series
+) {
+    FILE *f = fopen(path, "w");
+    if (!f) return FAILED_TO_OPEN_FILE;
+
+    for (size_t i = 0; i < count; i++) {
+        fprintf(f, "%i", labels[i]);
+        for (size_t t = 0; t < length; t++)
+            fprintf(f, " %f", series[i][t]);
         fprintf(f, "\n");
     }
 

@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+const Attribute ATTRIBUTES[MAX_ATTRIBUTE] = {DIST_MIN, DIST_MAX, FREQUENCY};
+
 static inline float Dist( //
     const float *shapelet,
     size_t       shapelet_length,

@@ -8,9 +8,6 @@ OBJS = $(SRCS:.c=.o)
 
 .build: $(OBJS)
 
-.classify: .build
-	$(CC) $(CFLAGS) -o classify $(BIN_DIR)/classify.c $(OBJS) -lm
-
 .convert: .build
 	$(CC) $(CFLAGS) -o convert $(BIN_DIR)/convert.c $(OBJS) -lm
 
@@ -18,13 +15,13 @@ OBJS = $(SRCS:.c=.o)
 	$(CC) $(CFLAGS) -o extract $(BIN_DIR)/extract.c $(OBJS) -lm
 
 all: build
-build: .classify .convert .extract
+build: .convert .extract
 
 for tbuild: CFLAGS += -fsanitize=address -D LOG_TRACE
-tbuild: .classify .convert .extract
+tbuild: .convert .extract
 
 for dbuild: CFLAGS += -fsanitize=address -D LOG_DEBUG -O0
-dbuild: .classify .convert .extract
+dbuild: .convert .extract
 
 for test: CFLAGS += -fsanitize=address -D LOG_DEBUG -O0
 test: .build

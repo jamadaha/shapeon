@@ -12,7 +12,7 @@
 #include "parse.h"
 #include "preprocessing.h"
 
-#define FEATURES 100
+#define FEATURES 64
 
 size_t Extract(
     Feature **features,
@@ -25,7 +25,8 @@ size_t Extract(
 
 int main(int argc, char **argv) {
     LogInit();
-    const char *path = argv[1];
+    const char *path_out = argv[1];
+    const char *path_in  = argv[2];
 
     INFO("Loading data");
     size_t    count  = 0;
@@ -33,7 +34,7 @@ int main(int argc, char **argv) {
     int      *labels = NULL;
     float   **series = NULL;
     ErrorCode code   = NONE;
-    code             = Load(&count, &length, &labels, &series, path);
+    code             = LoadData(&count, &length, &labels, &series, path_in);
     if (code != OK) {
         ERROR("Data loading failed with %d", code);
         return code;
@@ -58,7 +59,7 @@ int main(int argc, char **argv) {
     INFO("Features: %zu", feature_count);
 
     INFO("Exporting features");
-    code = ExportFeatures(feature_count, features);
+    code = ExportFeatures(path_out, feature_count, features);
     if (code != OK) {
         ERROR("Failed to export features with %d", code);
         goto TERMINATION;
@@ -66,7 +67,7 @@ int main(int argc, char **argv) {
 
 TERMINATION:
     INFO("Freeing data");
-    FreeLabelled(count, labels, series);
+    FreeData(count, labels, series);
     if (features) arrfree(features);
 
     return code;
@@ -80,7 +81,7 @@ size_t Extract(
     int      *labels,   // The class of each series
     float   **series    // A list of series. Must all be equal length
 ) {
-    Windower windower               = WindowerInit(2, 16, length, count, series);
+    Windower windower               = WindowerInit(2, 3, length, count, series);
     size_t   feature_count          = 0;
     float    feature_vals[FEATURES] = {0};
     Feature  _features[FEATURES]    = {0};

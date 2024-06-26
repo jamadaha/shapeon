@@ -4,8 +4,8 @@
 #include <stddef.h>
 
 typedef struct {
-    size_t       width; // number of elements in window
-    const float *ptr;   // ptr to start of window
+    size_t width; // number of elements in window
+    float *ptr;   // ptr to start of window
 } Window;
 
 typedef struct {

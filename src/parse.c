@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "error_code.h"
+#include "feature.h"
 #include "io.h"
 #include "log.h"
 #include "parse.h"
@@ -49,7 +50,7 @@ ErrorCode ParseFloatList( //
     return OK;
 }
 
-ErrorCode ParseLabelled( //
+ErrorCode ParseData( //
     size_t     *count,
     size_t     *length,
     int       **labels,
@@ -90,7 +91,7 @@ ErrorCode ParseLabelled( //
     return ec;
 }
 
-void FreeLabelled( //
+void FreeData( //
     size_t  count,
     int    *labels,
     float **series
@@ -101,7 +102,7 @@ void FreeLabelled( //
     if (series) arrfree(series);
 }
 
-ErrorCode Load( //
+ErrorCode LoadData( //
     size_t     *count,
     size_t     *length,
     int       **labels,
@@ -111,9 +112,73 @@ ErrorCode Load( //
     TRACE("Opening file %s", path);
     File file = FileOpen(path);
     TRACE("Parsing data");
-    ErrorCode ec = ParseLabelled(count, length, labels, series, file.buffer);
+    ErrorCode ec = ParseData(count, length, labels, series, file.buffer);
     TRACE("Closing file %s", path);
     FileClose(&file);
     if (ec != OK) ERROR("Load failed with %i", ec);
     return ec;
+}
+
+ErrorCode LoadFeatures( //
+    size_t     *count,
+    Feature   **features,
+    const char *path
+) {
+    TRACE("Opening file %s", path);
+    File file = FileOpen(path);
+    TRACE("Parsing data");
+    ErrorCode ec = ParseFeatures(count, features, file.buffer);
+    TRACE("Closing file %s", path);
+    FileClose(&file);
+    if (ec != OK) ERROR("Load failed with %i", ec);
+    return ec;
+}
+
+ErrorCode ParseFeatures( //
+    size_t     *count,
+    Feature   **features,
+    const char *str
+) {
+    ErrorCode ec        = OK;
+    Feature  *_features = NULL;
+
+    while (*str != '\0' && *str != EOF) {
+        if (isspace(*str)) {
+            str++;
+            continue;
+        }
+        Feature feature;
+        int     a;
+        if ((ec = ParseInt(&a, &str)) != OK) break;
+        if (a < 0 || a >= MAX_ATTRIBUTE) {
+            ec = PARSE_INVALID_ATTRIBUTE;
+            break;
+        }
+        feature.a = a;
+        float *f  = NULL;
+        if ((ec = ParseFloatList(&f, &str)) != OK) break;
+        feature.shapelet = f;
+        feature.length   = arrlenu(f);
+        arrpush(_features, feature);
+    }
+
+    if (ec == OK) {
+        *features = _features;
+        *count    = arrlenu((*features));
+    } else {
+        for (size_t i = 0; i < arrlenu(_features); i++)
+            free(_features[i].shapelet);
+        free(_features);
+    }
+
+    return ec;
+}
+
+void FreeFeatures( //
+    size_t   count,
+    Feature *features
+) {
+    for (size_t i = 0; i < count; i++)
+        arrfree(features[i].shapelet);
+    arrfree(features);
 }
