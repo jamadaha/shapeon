@@ -1,6 +1,6 @@
 #include "window.h"
 
-Windower WindowerInit(
+Windower WindowerInit( //
     size_t  window_min,
     size_t  window_max,
     size_t  series_width,
@@ -20,7 +20,10 @@ Windower WindowerInit(
     return w;
 }
 
-bool NextWindow(Window *window, Windower *windower) {
+bool NextWindow( //
+    Window   *window,
+    Windower *windower
+) {
     const size_t window_min   = windower->window_min;
     const size_t window_max   = windower->window_max;
     size_t      *window_index = &windower->window_index;
@@ -29,7 +32,7 @@ bool NextWindow(Window *window, Windower *windower) {
     const size_t series_width = windower->series_width;
     size_t      *series_index = &windower->series_index;
     float      **series       = windower->series;
-    const size_t remainder = series_width - *window_index;
+    const size_t remainder    = series_width - *window_index;
 
     if (*series_index >= series_count) {
         return false;

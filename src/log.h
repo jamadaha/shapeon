@@ -28,7 +28,6 @@ void LogStop(void);
 
 void _LogOutput(LogLevel level, const char *msg, ...);
 
-// clang-format off
 #define FATAL(msg, ...) _LogOutput(LOG_LEVEL_FATAL, msg, ##__VA_ARGS__);
 #define ERROR(msg, ...) _LogOutput(LOG_LEVEL_ERROR, msg, ##__VA_ARGS__);
 
@@ -55,4 +54,3 @@ void _LogOutput(LogLevel level, const char *msg, ...);
 #else
 #define TRACE(msg, ...)
 #endif
-// clang-format on

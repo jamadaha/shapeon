@@ -9,7 +9,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-File FileOpen(const char *path) {
+File FileOpen( //
+    const char *path
+) {
     File file = {.fd = -1, .buffer = NULL, .len = -1};
     file.fd   = open(path, O_RDONLY);
     if (file.fd == -1) {
@@ -34,12 +36,17 @@ File FileOpen(const char *path) {
     return file;
 }
 
-void FileClose(File *file) {
+void FileClose( //
+    File *file
+) {
     munmap(file->buffer, file->len);
     close(file->fd);
 }
 
-ErrorCode ExportFeatures(size_t count, Feature *features) {
+ErrorCode ExportFeatures( //
+    size_t   count,
+    Feature *features
+) {
     FILE *f = fopen("out.tsv", "w");
     if (!f) return FAILED_TO_OPEN_FILE;
 

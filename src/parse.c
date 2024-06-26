@@ -10,7 +10,10 @@
 #include "parse.h"
 #include "stb_ds.h"
 
-ErrorCode ParseInt(int *i, const char **str) {
+ErrorCode ParseInt( //
+    int         *i,
+    const char **str
+) {
     char *end;
     *i = strtol(*str, &end, 10);
     if (*str == end) return PARSE_ERROR;
@@ -18,7 +21,10 @@ ErrorCode ParseInt(int *i, const char **str) {
     return OK;
 }
 
-ErrorCode ParseFloat(float *f, const char **str) {
+ErrorCode ParseFloat( //
+    float       *f,
+    const char **str
+) {
     char *end;
     *f = strtof(*str, &end);
     if (*str == end) return PARSE_ERROR;
@@ -26,7 +32,10 @@ ErrorCode ParseFloat(float *f, const char **str) {
     return OK;
 }
 
-ErrorCode ParseFloatList(float **f, const char **str) {
+ErrorCode ParseFloatList( //
+    float      **f,
+    const char **str
+) {
     while (**str != '\0' && **str != EOF && **str != '\n') {
         if (isspace(**str)) {
             (*str)++;
@@ -40,7 +49,7 @@ ErrorCode ParseFloatList(float **f, const char **str) {
     return OK;
 }
 
-ErrorCode ParseLabelled(
+ErrorCode ParseLabelled( //
     size_t     *count,
     size_t     *length,
     int       **labels,
@@ -81,7 +90,7 @@ ErrorCode ParseLabelled(
     return ec;
 }
 
-void FreeLabelled(
+void FreeLabelled( //
     size_t  count,
     int    *labels,
     float **series
@@ -92,7 +101,7 @@ void FreeLabelled(
     if (series) arrfree(series);
 }
 
-ErrorCode Load(
+ErrorCode Load( //
     size_t     *count,
     size_t     *length,
     int       **labels,
@@ -102,9 +111,7 @@ ErrorCode Load(
     TRACE("Opening file %s", path);
     File file = FileOpen(path);
     TRACE("Parsing data");
-    ErrorCode ec = ParseLabelled(
-        count, length, labels, series, file.buffer
-    );
+    ErrorCode ec = ParseLabelled(count, length, labels, series, file.buffer);
     TRACE("Closing file %s", path);
     FileClose(&file);
     if (ec != OK) ERROR("Load failed with %i", ec);

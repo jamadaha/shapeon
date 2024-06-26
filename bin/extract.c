@@ -80,7 +80,7 @@ size_t Extract(
     int      *labels,   // The class of each series
     float   **series    // A list of series. Must all be equal length
 ) {
-    Windower windower               = WindowerInit(2, 4, length, count, series);
+    Windower windower               = WindowerInit(2, 16, length, count, series);
     size_t   feature_count          = 0;
     float    feature_vals[FEATURES] = {0};
     Feature  _features[FEATURES]    = {0};

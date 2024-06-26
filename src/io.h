@@ -11,7 +11,14 @@ typedef struct {
 
 // Opens file and directs buffer to file content
 // Remember to call close file!
-File FileOpen(const char *path);
-void FileClose(File *file);
+File FileOpen( //
+    const char *path
+);
+void FileClose( //
+    File *file
+);
 
-ErrorCode ExportFeatures(size_t count, Feature *features);
+ErrorCode ExportFeatures( //
+    size_t   count,
+    Feature *features
+);

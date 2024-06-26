@@ -5,7 +5,16 @@
 #include <stddef.h>
 
 // returns the multi class fischer value
-float Evaluate(size_t count, size_t classes, int *labels, float *vals);
+float Evaluate( //
+    size_t count,
+    size_t classes,
+    int   *labels,
+    float *vals
+);
 
 // checks whether a similar feature is already contained
-bool Exists(size_t count, Feature *features, Feature *feature);
+bool Exists( //
+    size_t   count,
+    Feature *features,
+    Feature *feature
+);

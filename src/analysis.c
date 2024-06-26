@@ -1,7 +1,12 @@
 #include "analysis.h"
 #include <math.h>
 
-float Evaluate(size_t count, size_t classes, int *labels, float *vals) {
+float Evaluate( //
+    size_t count,
+    size_t classes,
+    int   *labels,
+    float *vals
+) {
     float  total = 0;
     size_t class_counts[classes];
     float  sums[classes];
@@ -31,14 +36,22 @@ float Evaluate(size_t count, size_t classes, int *labels, float *vals) {
     return mean / scatter;
 }
 
-static inline float Distance(size_t len, const float *a, const float *b) {
+static inline float Distance( //
+    size_t       len,
+    const float *a,
+    const float *b
+) {
     float dist = 0;
     for (size_t i = 0; i < len; i++)
         dist += powf(a[i] - b[i], 2);
     return sqrtf(dist);
 }
 
-bool Exists(size_t count, Feature *features, Feature *feature) {
+bool Exists( //
+    size_t   count,
+    Feature *features,
+    Feature *feature
+) {
     for (size_t i = 0; i < count; i++) {
         Feature *_feature = &features[i];
         if (feature->a != _feature->a) continue;

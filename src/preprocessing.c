@@ -3,7 +3,11 @@
 
 #include "preprocessing.h"
 
-size_t MapLabels(int *mapped, int *labels, size_t length) {
+size_t MapLabels( //
+    int   *mapped,
+    int   *labels,
+    size_t length
+) {
     size_t count = 0;
 
     for (size_t i = 0; i < length; i++) {

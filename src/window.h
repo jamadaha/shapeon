@@ -19,7 +19,7 @@ typedef struct {
     float      **series;       // ptr to a list of lists
 } Windower;
 
-Windower WindowerInit(
+Windower WindowerInit( //
     size_t  window_min,
     size_t  window_max,
     size_t  series_width,
@@ -27,4 +27,7 @@ Windower WindowerInit(
     float **series
 );
 
-bool NextWindow(Window *window, Windower *windower);
+bool NextWindow( //
+    Window   *window,
+    Windower *windower
+);

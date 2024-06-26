@@ -4,7 +4,7 @@
 
 #include "error_code.h"
 
-ErrorCode Load(
+ErrorCode Load( //
     size_t     *count,
     size_t     *length,
     int       **labels,
@@ -12,7 +12,7 @@ ErrorCode Load(
     const char *path
 );
 
-ErrorCode ParseLabelled(
+ErrorCode ParseLabelled( //
     size_t     *count,
     size_t     *length,
     int       **labels,
@@ -20,7 +20,7 @@ ErrorCode ParseLabelled(
     const char *str
 );
 
-void FreeLabelled(
+void FreeLabelled( //
     size_t  count,
     int    *labels,
     float **series
