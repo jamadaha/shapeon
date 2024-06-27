@@ -22,29 +22,14 @@ float Evaluate( //
     const float total_mean = total / count;
     float       means[classes];
     for (size_t i = 0; i < classes; i++)
-        means[i] = 0;
-    for (size_t i = 0; i < classes; i++)
         means[i] = sums[i] / class_counts[i];
     float mean = 0;
     for (size_t i = 0; i < classes; i++)
-        mean += powf(total_mean - means[i], 2);
+        mean += fabs(total_mean - means[i]);
     float scatter = 0;
-    for (size_t i = 0; i < count; i++) {
-        const float _scatter = means[labels[i]] - vals[i];
-        scatter += powf(_scatter, 2);
-    }
+    for (size_t i = 0; i < count; i++)
+        scatter += fabs(means[labels[i]] - vals[i]);
     return mean / scatter;
-}
-
-static inline float Distance( //
-    size_t       len,
-    const float *a,
-    const float *b
-) {
-    float dist = 0;
-    for (size_t i = 0; i < len; i++)
-        dist += powf(a[i] - b[i], 2);
-    return sqrtf(dist);
 }
 
 bool Exists( //
@@ -56,8 +41,17 @@ bool Exists( //
         Feature *_feature = &features[i];
         if (feature->a != _feature->a) continue;
         if (feature->length != _feature->length) continue;
-        const float d = Distance(feature->length, feature->shapelet, _feature->shapelet);
-        if (d < powf(_feature->shapelet[1] - _feature->shapelet[0], 2)) return true;
+        bool         differs = false;
+        const size_t length  = feature->length;
+        for (size_t i = 1; i < length; i++) {
+            const float delta_a = feature->shapelet[i] - feature->shapelet[i - 1];
+            const float delta_b = _feature->shapelet[i] - feature->shapelet[i - 1];
+            if (fabs(delta_a - delta_b) < 0.1) {
+                differs = true;
+                break;
+            }
+        }
+        if (!differs) return true;
     }
     return false;
 }

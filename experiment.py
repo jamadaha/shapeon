@@ -5,6 +5,7 @@ import subprocess
 from sklearn.neighbors import KNeighborsClassifier
 import pandas
 import numpy
+import matplotlib.pyplot as plt
 
 
 def eval(path_train, path_test):
@@ -14,9 +15,9 @@ def eval(path_train, path_test):
     labels_test = data_test[:, 0].astype(int)
     series_learn = numpy.delete(data_train, 0, axis=1)
     series_test = numpy.delete(data_test, 0, axis=1)
-    knn = KNeighborsClassifier(n_neighbors=3)
+    knn = KNeighborsClassifier(n_neighbors=1)
     knn.fit(series_learn, labels_learn)
-    return knn.score(series_test, labels_test)
+    return knn.score(series_test, labels_test) * 100
 
 
 EXTRACT_PATH = "./extract"
@@ -44,6 +45,9 @@ dirs[:] = [x for x in dirs if "Thorax" not in x]  # Too many classes
 dirs[:] = [x for x in dirs if "ShapesAll" not in x]  # Too many classes
 
 print(f"Data sets: {len(dirs)}")
+
+before = []
+after = []
 
 for path in (bar := tqdm(dirs)):
     name = os.path.basename(path)
@@ -87,5 +91,13 @@ for path in (bar := tqdm(dirs)):
     score_unprocessed = eval(path_shots, path_test)
     score_processed = eval(path_processed_train, path_processed_test)
 
-    # Print result
-    print(f"Before: {score_unprocessed} - After: {score_processed}")
+    before.append(score_unprocessed)
+    after.append(score_processed)
+
+plt.xlabel("Before")
+plt.ylabel("After")
+plt.xlim(0, 100)
+plt.ylim(0, 100)
+plt.plot([0, 100], [0, 100], color="black")
+plt.scatter(before, after)
+plt.show()

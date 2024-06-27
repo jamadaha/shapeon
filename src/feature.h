@@ -2,7 +2,12 @@
 
 #include <stddef.h>
 
-typedef enum { DIST_MIN, DIST_MAX, FREQUENCY, MAX_ATTRIBUTE } Attribute;
+typedef enum { //
+    DIST_MIN,
+    DIST_MAX,
+    FREQUENCY,
+    MAX_ATTRIBUTE,
+} Attribute;
 extern const Attribute ATTRIBUTES[MAX_ATTRIBUTE];
 
 typedef struct {

@@ -72,7 +72,7 @@ static inline float Frequency( //
     size_t       series_length
 ) {
     const size_t limit     = series_length - shapelet_length;
-    const float  tolerance = fabs(shapelet[1] - shapelet[0]) / 10;
+    const float  tolerance = 0.1;
 
     size_t matches = 0;
     for (size_t i = 0; i <= limit; i++) {
