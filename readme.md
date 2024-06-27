@@ -6,6 +6,9 @@ Converts a set of labelled time series into features that best discriminate them
 
 How well a feature discriminates the set of labelled time series is the calculated as the Fischer Linear Discriminant for multiple classes.
 
+## Experiment
+Is set up to run with the UCR Time Series Classification Archive, found [here](https://www.cs.ucr.edu/~eamonn/time_series_data_2018/).
+
 ## Building
 To build the executable, simply run the following:
 ```
